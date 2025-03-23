@@ -1,118 +1,51 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { NavigationContainer } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import OnBoard from "./screens/OnboardLogin/OnBoard.js"
+import Register from "./screens/OnboardLogin/Register.js"
+import Login from "./screens/OnboardLogin/Login.js"
+import Dashboard from "./screens/Dashboard/Dashboard.js"
+import Account from "./screens/Account/Account.js"
+import Note from "./screens/Note/Note.js"
+import Reminders from "./screens/Reminders/Reminders.js"
+import Lecture from "./screens/Lecture/Lecture.js"
+import EachDay from "./screens/Lecture/EachDay.js"
+import AddLecture from "./screens/Lecture/AddLecture"
+import AddReminder from "./screens/Reminders/AddReminder"
+import Theme from "./screens/Account/Themes"
+import About from "./screens/Account/About"
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import 'react-native-url-polyfill/auto'; // Polyfills URL and URLSearchParams
+import 'react-native-get-random-values'; // Ensures crypto.getRandomValues() works
+import { decode, encode } from 'base-64';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+if (!global.btoa) {
+  global.btoa = encode;
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+if (!global.atob) {
+  global.atob = decode;
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+const Stack = createNativeStackNavigator();
 
-export default App;
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="OnBoard">
+        <Stack.Screen component={OnBoard} name="OnBoard" options={{headerShown: false}} />
+        <Stack.Screen component={Register} name="Register" options={{headerShown: false}} />
+        <Stack.Screen component={Login} name="Login" options={{headerShown: false}} />
+        <Stack.Screen component={Dashboard} name="Dashboard" options={{headerShown: false}} />
+        <Stack.Screen component={Account} name="Account" options={{headerShown: false}} />
+        <Stack.Screen component={Note} name="Note" options={{headerShown: false}} />
+        <Stack.Screen component={Reminders} name="Reminders" options={{headerShown: false}} />
+        <Stack.Screen component={Lecture} name="Lecture" options={{headerShown: false}} />
+        <Stack.Screen component={EachDay} name="EachDay" options={{headerShown: false}} />
+        <Stack.Screen component={AddLecture} name="AddLecture" options={{headerShown: false}} />
+        <Stack.Screen component={AddReminder} name="AddReminder" options={{headerShown: false}} />
+        <Stack.Screen component={Theme} name="Theme" options={{headerShown: false}} />
+        <Stack.Screen component={About} name="About" options={{headerShown: false}} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}

@@ -42,6 +42,7 @@ export default function LectureContainer({ email, today }) {
       {classData.map((lecture) => (
         <LectureBlock
           key={lecture._id}
+          id={lecture._id}
           lectureCode={lecture.lectureCode}
           startTime={lecture.startTime}
           endTime={lecture.endTime}

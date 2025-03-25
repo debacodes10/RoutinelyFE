@@ -83,6 +83,7 @@ export default function Reminders() {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <ReminderBlock
+            id={item._id}
             tag={item.tag}
             time={item.time}
             taskName={item.title}

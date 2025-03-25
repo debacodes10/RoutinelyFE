@@ -7,33 +7,31 @@ export default function ReminderContainer({ email }) {
   const [userEmail, setUserEmail] = useState('');
   const [reminderData, setReminderData] = useState([]);
 
+  
   useEffect(() => {
+  if (email) {
     setUserEmail(email);
-    //console.log(email)
-  }, [email]);
-
-  useEffect(() => {
+    
     const fetchUserData = async () => {
-      if (userEmail) {
-        try {
-          const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${userEmail}`);
-          const data = await response.json();
+      try {
+        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${email}`);
+        const data = await response.json();
 
-          // Get the current date in DD/MM/YYYY format
-          const currentDate = new Date().toLocaleDateString('en-GB'); // 'en-GB' for DD/MM/YYYY format
+        // Get the current date in DD/MM/YYYY format
+        const currentDate = new Date().toLocaleDateString('en-GB');
 
-          // Filter data to only include reminders for the current date
-          const filteredData = data.filter(reminder => reminder.date === currentDate);
-          
-          setReminderData(filteredData);
-        } catch (error) {
-          console.log('Error fetching user data:', error);
-        }
+        // Filter data to only include reminders for the current date
+        const filteredData = data.filter(reminder => reminder.date === currentDate);
+        
+        setReminderData(filteredData);
+      } catch (error) {
+        console.log('Error fetching user data:', error);
       }
     };
 
     fetchUserData();
-  }, [userEmail]);
+  }
+}, [email]);  // Depend only on `email`, no need for `userEmail`
 
   return (
     <ScrollView
@@ -43,7 +41,8 @@ export default function ReminderContainer({ email }) {
     >
       {reminderData.map((reminder) => (
         <ReminderBlock
-          key={reminder._id} // Use a unique key for each item
+          key={reminder._id} 
+          id={reminder._id} 
           tag={reminder.tag}
           time={reminder.time}
           taskName={reminder.title}

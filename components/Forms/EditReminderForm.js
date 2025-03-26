@@ -1,56 +1,32 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Platform, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import OptionModal from './../Selectors/OptionModal';
-import { useNavigation } from "@react-navigation/native"
-import {SERVER_PORT, SERVER_URL} from "@env"
+import { useNavigation } from "@react-navigation/native";
+import { SERVER_PORT, SERVER_URL } from "@env";
 
-export default function ReminderForm({email}) {
+export default function EditReminderForm({ reminderId, props }) {
+  const navigation = useNavigation();
 
-  const navigation = useNavigation()
+  //console.log("On form: ", props);
 
+  const [inputHeight, setInputHeight] = useState(22 * 7);
+
+  // State Variables
   const [title, setTitle] = useState('');
   const [tag, setTag] = useState('');
   const [date, setDate] = useState(new Date());
-  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
-  const [inputHeight, setInputHeight] = useState(22 * 7);
+  const [time, setTime] = useState('07:00');
   const [priority, setPriority] = useState('High');
   const [assignee, setAssignee] = useState('');
+  const [color, setColor] = useState('Green');
 
+  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
   const [priorityModalVisible, setPriorityModalVisible] = useState(false);
   const [colorModalVisible, setColorModalVisible] = useState(false);
 
-  const [time, setTime] = useState('07:00');
-  const [color, setColor] = useState('Green');
-
-  const showDatePicker = () => {
-    setDatePickerVisible(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisible(false);
-  };
-
-  const showTimePicker = () => {
-    setTimePickerVisible(true);
-  };
-
-  const hideTimePicker = () => {
-    setTimePickerVisible(false);
-  };
-
-  const handleConfirmDate = (selectedDate) => {
-    setDate(selectedDate);
-    hideDatePicker();
-  };
-
-  const handleTimeConfirm = (selectedTime) => {
-    const formattedTime = format(selectedTime, 'HH:mm');
-    setTime(formattedTime);
-    hideTimePicker();
-  };
 
   const priorityOptions = [
     { label: 'High', value: 'High', color: '#B82132' },
@@ -58,51 +34,89 @@ export default function ReminderForm({email}) {
     { label: 'Low', value: 'Low', color: '#FFB22C' },
   ];
 
+
   const colorOptions = [
     { label: 'Orange', value: 'Orange', color: '#E25E3E' },
     { label: 'Green', value: 'Green', color: '#006769' },
     { label: 'Blue', value: 'Blue', color: '#1679AB' },
   ];
 
-  const handleSubmit = async () => {
-    const selectedColor = colorOptions.find(o => o.value === color)?.color;
-    const data = {
-      userEmail: email,
-      title: title,
-      tag: tag,
-      time: time,
-      date: format(date, 'dd/MM/yyyy'),
-      priority: priority,
-      assignee: assignee,
-      color: selectedColor,
-    };
-    console.log(data);
-    try {
-      const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
-      if(response.ok) {
-        Alert.alert('Success', 'Reminder registered successfully!');
-        navigation.goBack()
-      } else {
-        Alert.alert('Failed', result.message || 'Something went wrong');
+  // Set initial form values from props
+  useEffect(() => {
+    if (props) {
+      setTitle(props.title || '');
+      setTag(props.tag || '');
+      setTime(props.time || '07:00');
+      setPriority(props.priority || 'High');
+      setAssignee(props.assignee || '');
+      const selectedColor = colorOptions.find(option => option.color === props.accentColor)?.value || 'Green';
+      setColor(selectedColor);
+
+      // Convert date string (dd/MM/yyyy) to Date object
+      if (props.date) {
+        try {
+          const parsedDate = parse(props.date, 'dd/MM/yyyy', new Date());
+          setDate(parsedDate);
+        } catch (error) {
+          console.error("Error parsing date: ", error);
+        }
       }
-    } catch (error) {
-      Alert.alert('Failed', 'Network error');
+    }
+  }, [props]);
+
+  // Handle Date Selection
+  const handleConfirmDate = (selectedDate) => {
+    setDate(selectedDate);
+    setDatePickerVisible(false);
+  };
+
+  // Handle Time Selection
+  const handleTimeConfirm = (selectedTime) => {
+    const formattedTime = format(selectedTime, 'HH:mm');
+    setTime(formattedTime);
+    setTimePickerVisible(false);
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+  const selectedColor = colorOptions.find(o => o.value === color)?.color;
+  const reminderData = {
+    title: title,
+    tag: tag,
+    date: format(date, 'dd/MM/yyyy'),
+    time: time,
+    priority: priority,
+    assignee: assignee,
+    color: selectedColor 
+  };
+
+  console.log("Updated Reminder:", reminderData);
+
+  try {
+    const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${reminderId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(reminderData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-  };
+    console.log("Reminder updated successfully");
+    navigation.goBack();
+  } catch (error) {
+    console.error("Error updating reminder:", error);
+  }
+};
 
   return (
     <View style={styles.container}>
       <TextInput
         value={title}
-        onChangeText={(e) => setTitle(e)}
+        onChangeText={setTitle}
         placeholder="Title"
         placeholderTextColor="#AAA"
         style={[styles.text, { fontSize: 28, fontWeight: '300', borderBottomWidth: 1, borderBottomColor: '#CCC' }]}
@@ -110,17 +124,15 @@ export default function ReminderForm({email}) {
 
       <TextInput
         value={tag}
-        onChangeText={(e) => setTag(e)}
+        onChangeText={setTag}
         placeholder="Tag"
-        style={[styles.text, { fontSize: 22, fontWeight: '300', height: inputHeight, borderBottomWidth: 1, borderBottomColor: '#CCC', textAlignVertical: 'top' }]}
-        multiline
         placeholderTextColor="#AAA"
-        onContentSizeChange={(e) => setInputHeight(Math.min(Math.max(e.nativeEvent.contentSize.height, 22 * 7), 22 * 12))}
+        style={[styles.text, { fontSize: 22, fontWeight: '300', height: inputHeight, borderBottomWidth: 1, borderBottomColor: '#CCC', textAlignVertical: 'top' }]}
       />
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Date :</Text>
-        <TouchableOpacity onPress={showDatePicker}>
+        <Text style={styles.label}>Date:</Text>
+        <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
           <Text style={styles.dateText}>{format(date, 'EEEE, dd/MM/yyyy')}</Text>
         </TouchableOpacity>
       </View>
@@ -129,13 +141,13 @@ export default function ReminderForm({email}) {
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirmDate}
-        onCancel={hideDatePicker}
+        onCancel={() => setDatePickerVisible(false)}
         display={Platform.OS === 'ios' ? 'inline' : 'calendar'}
       />
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Time :</Text>
-        <TouchableOpacity onPress={showTimePicker}>
+        <Text style={styles.label}>Time:</Text>
+        <TouchableOpacity onPress={() => setTimePickerVisible(true)}>
           <Text style={[styles.timebox, styles.text, {fontSize: 22, fontWeight: '300'}]}>{time}</Text>
         </TouchableOpacity>
       </View>
@@ -144,7 +156,7 @@ export default function ReminderForm({email}) {
         isVisible={isTimePickerVisible}
         mode="time"
         onConfirm={handleTimeConfirm}
-        onCancel={hideTimePicker}
+        onCancel={() => setTimePickerVisible(false)}
       />
 
       <TouchableOpacity onPress={() => setPriorityModalVisible(true)} style={styles.inputGroup}>
@@ -158,6 +170,7 @@ export default function ReminderForm({email}) {
         options={priorityOptions}
         onSelect={(value) => setPriority(value)}
       />
+
 
       <TouchableOpacity style={styles.inputGroup} onPress={() => setColorModalVisible(true)}>
         <Text style={styles.label}>Accent Color:</Text>
@@ -238,4 +251,5 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 6,
   },
+
 });

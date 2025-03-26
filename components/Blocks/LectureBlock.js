@@ -22,9 +22,6 @@ export default function LectureBlock({
   }
 
   const handleDelete = async () => {
-    console.log("Trying to delete...");
-    console.log(id);
-
     try {
       const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/${id}`, {
         method: "DELETE",

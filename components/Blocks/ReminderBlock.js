@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import LongPressModal from "../Selectors/LongPressModal";
 import { SERVER_URL, SERVER_PORT } from "@env";
+import { useNavigation } from "@react-navigation/native"
 
 export default function ReminderBlock({ 
   id, 
@@ -13,18 +14,18 @@ export default function ReminderBlock({
   accentColor, 
   onDelete 
 }) {
+
+  const navigation = useNavigation();
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleUpdate = async () => {
-    console.log("Trying to update reminder...");
-    console.log(id);
+    navigation.navigate("EditReminders", {id})
+
     setModalVisible(false);
   };
 
   const handleDelete = async () => {
-    console.log("Trying to delete reminder...");
-    console.log(id);
-
     try {
       const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${id}`, {
         method: "DELETE",

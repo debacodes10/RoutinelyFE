@@ -18,7 +18,7 @@ export default function EachDay({ route }) {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/${userEmail}`);
+        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/user/${userEmail}`);
         const data = await response.json();
         const filteredLectures = data.filter(lecture => lecture.day === day);
         setLectures(filteredLectures);
@@ -52,7 +52,8 @@ export default function EachDay({ route }) {
           data={lectures}
           keyExtractor={item => item._id}
           renderItem={({ item }) => (
-            <LectureBlock 
+            <LectureBlock
+              id={item._id}
               lectureCode={item.lectureCode}
               startTime={item.startTime}
               endTime={item.endTime}

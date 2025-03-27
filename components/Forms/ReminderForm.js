@@ -56,7 +56,7 @@ export default function ReminderForm({email}) {
     { label: 'High', value: 'High', color: '#B82132' },
     { label: 'Medium', value: 'Medium', color: '#27667B' },
     { label: 'Low', value: 'Low', color: '#FFB22C' },
-  ];
+  ] ;
 
   const colorOptions = [
     { label: 'Orange', value: 'Orange', color: '#E25E3E' },

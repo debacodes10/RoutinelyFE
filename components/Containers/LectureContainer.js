@@ -9,9 +9,7 @@ export default function LectureContainer({ email, today }) {
   const [classData, setClassData] = useState([]);
 
   useEffect(() => {
-    // Set email and day whenever they change
     setUserEmail(email);
-    //console.log(email)
     setDay(today);
   }, [email, today]);
 
@@ -19,7 +17,7 @@ export default function LectureContainer({ email, today }) {
     const fetchUserData = async () => {
       if (userEmail && day) { // Ensure both userEmail and day are set
         try {
-          const response = await fetch(`http://192.168.1.8:3000/api/class/${userEmail}`);
+          const response = await fetch(`http://192.168.1.8:3000/api/class/user/${userEmail}`);
           const data = await response.json();
           const filteredData = data.filter(lecture => lecture.day === day);
           // console.log("Filtered data:", filteredData);

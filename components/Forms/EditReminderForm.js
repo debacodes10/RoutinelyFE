@@ -89,9 +89,6 @@ export default function EditReminderForm({ reminderId, props }) {
     assignee: assignee,
     color: selectedColor 
   };
-
-  console.log("Updated Reminder:", reminderData);
-
   try {
     const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${reminderId}`, {
       method: "PUT",

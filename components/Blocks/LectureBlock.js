@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import LongPressModal from "../Selectors/LongPressModal";
 import { SERVER_URL, SERVER_PORT } from "@env"
+import { useNavigation } from "@react-navigation/native"
 
 export default function LectureBlock({
   id,
@@ -13,11 +14,12 @@ export default function LectureBlock({
   professor,
   accentColor,
 }) {
+
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  
+  //console.log(id) 
   const handleUpdate = async () => {
-    console.log("Trying to update...")
-    console.log(id)
+    navigation.navigate("EditLecture", { id }) 
     setModalVisible(false)
   }
 

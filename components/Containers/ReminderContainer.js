@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ReminderBlock from '../Blocks/ReminderBlock';
 import {SERVER_URL, SERVER_PORT} from "@env"
+import EmptyList from "./../Fillers/EmptyList"
 
 export default function ReminderContainer({ email }) {
   const [userEmail, setUserEmail] = useState('');
@@ -51,6 +52,7 @@ export default function ReminderContainer({ email }) {
           accentColor={reminder.accentColor}
         />
       ))}
+      {reminderData.length === 0 && <EmptyList />}
     </ScrollView>
   );
 }

@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import NoteBlock from '../Blocks/NoteBlock';
 import {SERVER_URL, SERVER_PORT} from "@env"
+import EmptyList from "./../Fillers/EmptyList"
 
 export default function NoteContainer({ email }) {
 
@@ -30,19 +31,27 @@ export default function NoteContainer({ email }) {
   }, [userEmail]);
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.container}
-    >
-      {noteData.map((note) => (
-        <NoteBlock 
-          key={note._id}
-          title={note.title}
-          tag={note.tags}
-          body={note.description}
-        />
-      ))}
-    </ScrollView>
+    
+<ScrollView
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={[
+    styles.container,
+    noteData.length === 0 && { flex: 1, justifyContent: 'center' }
+  ]}
+>
+  {noteData.length === 0 ? (
+    <EmptyList />
+  ) : (
+    noteData.map((note) => (
+      <NoteBlock 
+        key={note._id}
+        title={note.title}
+        tag={note.tags}
+        body={note.description}
+      />
+    ))
+  )}
+</ScrollView>
   );
 }
 

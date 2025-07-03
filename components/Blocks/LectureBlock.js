@@ -19,12 +19,15 @@ export default function LectureBlock({
   const [modalVisible, setModalVisible] = useState(false);
   //console.log(id) 
   const handleUpdate = async () => {
-    navigation.navigate("EditLecture", { id }) 
+    navigation.navigate("EditLecture", { 
+      id, lectureCode, startTime, endTime, lectureName, priority, professor, accentColor
+    }) 
     setModalVisible(false)
   }
 
   const handleDelete = async () => {
     try {
+      console.log(id)
       const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/${id}`, {
         method: "DELETE",
         headers: {
@@ -34,13 +37,6 @@ export default function LectureBlock({
 
       if (!response.ok) {
         throw new Error("Failed to delete lecture");
-      }
-
-      console.log("Lecture deleted successfully");
-
-      // Refresh the component data by calling onDelete prop
-      if (onDelete) {
-        onDelete(id);
       }
     } catch (error) {
       console.error("Error deleting lecture:", error.message);

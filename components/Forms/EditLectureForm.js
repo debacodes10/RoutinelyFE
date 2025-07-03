@@ -35,10 +35,11 @@ export default function EditLectureForm({ classId, props }) {
   ];
 
   useEffect(()=>{
+    console.log(props)
     if (props) {
       setTitle(props.lectureName || '' )
       setCode(props.lectureCode || '')
-      setProfName(props.professorName || '')
+      setProfName(props.professor || '')
       setStartTime(props.startTime || '09:00')
       setEndTime(props.endTime || '11:30')
       setPriority(props.priority || 'High')

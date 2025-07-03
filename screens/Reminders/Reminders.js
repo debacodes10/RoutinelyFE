@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import dayjs from 'dayjs';
 import ReminderBlock from '../../components/Blocks/ReminderBlock';
 import {SERVER_URL, SERVER_PORT} from "@env"
+import EmptyList from "./../../components/Fillers/EmptyList"
 
 export default function Reminders() {
   const navigation = useNavigation();
@@ -92,6 +93,8 @@ export default function Reminders() {
             accentColor={item.accentColor}
           />
         )}
+        ListEmptyComponent={<EmptyList />}
+        contentContainerStyle={filteredReminders.length === 0 && { flex: 1 }}
       />
       <BottomNavigation active={'reminder'} />
     </SafeAreaView>

@@ -7,6 +7,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useNavigation } from '@react-navigation/native';
 import LectureBlock from '../../components/Blocks/LectureBlock';
 import {SERVER_URL, SERVER_PORT} from "@env"
+import EmptyList from '../../components/Fillers/EmptyList'
 
 export default function EachDay({ route }) {
   const navigation = useNavigation();
@@ -48,25 +49,27 @@ export default function EachDay({ route }) {
         </TouchableOpacity>
       </View>
       {loading ? (
-        <ActivityIndicator size="large" color="#EEE" style={{ marginTop: 20 }} />
-      ) : (
-        <FlatList 
-          data={lectures}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => (
-            <LectureBlock
-              id={item._id}
-              lectureCode={item.lectureCode}
-              startTime={item.startTime}
-              endTime={item.endTime}
-              lectureName={item.lectureName}
-              priority={item.priority}
-              professor={item.professorName}
-              accentColor={item.accentColor}
-            />
-          )}
-        />
-      )}
+  <ActivityIndicator size="large" color="#EEE" style={{ marginTop: 20 }} />
+) : lectures.length === 0 ? (
+  <EmptyList />
+) : (
+  <FlatList 
+    data={lectures}
+    keyExtractor={item => item._id}
+    renderItem={({ item }) => (
+      <LectureBlock
+        id={item._id}
+        lectureCode={item.lectureCode}
+        startTime={item.startTime}
+        endTime={item.endTime}
+        lectureName={item.lectureName}
+        priority={item.priority}
+        professor={item.professorName}
+        accentColor={item.accentColor}
+      />
+    )}
+  />
+)}
       <BottomNavigation active={"lecture"} />
     </SafeAreaView>
   );

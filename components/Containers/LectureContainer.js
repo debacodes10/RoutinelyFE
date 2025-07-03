@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import LectureBlock from '../Blocks/LectureBlock';
 import {SERVER_URL, SERVER_PORT} from "@env"
+import EmptyList from "./../Fillers/EmptyList"
 
 export default function LectureContainer({ email, today }) { 
   const [userEmail, setUserEmail] = useState("");
@@ -50,6 +51,7 @@ export default function LectureContainer({ email, today }) {
           accentColor={lecture.accentColor}
         />
       ))}
+    {classData.length === 0 && <EmptyList /> }
     </ScrollView>
   );
 }

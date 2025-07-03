@@ -9,15 +9,27 @@ import EditLectureForm from "../../components/Forms/EditLectureForm"
 export default function EditLecture({ route }) {
   
   const navigation = useNavigation();
-  const { id } = route.params
+  const { 
+    id, lectureCode, startTime, endTime, lectureName, priority, professor, accentColor
+  } = route.params
 
   const [classData, setClassData] = useState({})
 
-  const fetchData = async () => {
+  const data = {
+        id: id,
+        lectureCode: lectureCode,
+        startTime: startTime,
+        endTime: endTime,
+        lectureName: lectureName,
+        priority: priority,
+        professor: professor,
+        accentColor: accentColor
+      } 
+
+  const fetchData = () => {
     try {
-      const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/id/${id}`)
-      const data = await response.json()
       setClassData(data)
+      console.log(classData)
     } catch (error) {
       console.error(error)
     } 

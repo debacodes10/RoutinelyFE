@@ -18,9 +18,11 @@ export default function EachDay({ route }) {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/user/${userEmail}`);
+        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/${userEmail}`);
         const data = await response.json();
+        console.log(data)
         const filteredLectures = data.filter(lecture => lecture.day === day);
+        console.log(filteredLectures)
         setLectures(filteredLectures);
       } catch (error) {
         console.error('Error fetching classes:', error);

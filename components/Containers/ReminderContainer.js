@@ -14,7 +14,7 @@ export default function ReminderContainer({ email }) {
     
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/user/${email}`);
+        const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${email}`);
         const data = await response.json();
 
         // Get the current date in DD/MM/YYYY format

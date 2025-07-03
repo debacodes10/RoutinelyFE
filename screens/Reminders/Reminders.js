@@ -33,7 +33,7 @@ export default function Reminders() {
       if (session?.user?.email) {
         try {
           //console.log(session.user.email)
-          const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/user/${session.user.email}`);
+          const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${session.user.email}`);
           const data = await response.json();
           //console.log(data)
           setReminders(data);

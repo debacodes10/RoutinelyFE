@@ -8,6 +8,8 @@ import {SERVER_PORT, SERVER_URL} from "@env"
 
 export default function ReminderForm({email}) {
 
+//  console.log(SERVER_PORT, SERVER_URL)
+
   const navigation = useNavigation()
 
   const [title, setTitle] = useState('');

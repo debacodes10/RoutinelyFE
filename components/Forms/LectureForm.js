@@ -77,6 +77,7 @@ export default function LectureForm({day, email}) {
         navigation.goBack()
       } else {
         Alert.alert('Failed', result.message || 'Something went wrong');
+        console.log("Error saving lecture.")
       }
     } catch (error) {
       Alert.alert('Failed', 'Network error');

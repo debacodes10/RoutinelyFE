@@ -60,6 +60,7 @@ export default function Note() {
         userEmail: session.user.email,
         tags: selectedTag,
       }
+      console.log(data)
       try {
         const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/note/create`, {
           method: 'POST',

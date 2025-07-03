@@ -18,6 +18,7 @@ export default function NoteContainer({ email }) {
         try {
           const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/note/${userEmail}`);
           const data = await response.json();
+          console.log(data)
           setNoteData(data);
         } catch (error) {
           console.log('Error fetching user data:', error);

@@ -17,7 +17,7 @@ export default function LectureContainer({ email, today }) {
     const fetchUserData = async () => {
       if (userEmail && day) { // Ensure both userEmail and day are set
         try {
-          const response = await fetch(`http://192.168.1.8:3000/api/class/user/${userEmail}`);
+          const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/${userEmail}`);
           const data = await response.json();
           const filteredData = data.filter(lecture => lecture.day === day);
           // console.log("Filtered data:", filteredData);

@@ -47,7 +47,8 @@ export default function AccountOptions({ authenticated }) {
             {loggedIn ? (
                 <>
                     <View style={styles.rowContainer}>
-                        <TouchableOpacity style={styles.eachOption} activeOpacity={0.75} >
+                        <TouchableOpacity style={styles.eachOption} activeOpacity={0.75} 
+                          onPress={()=>navigation.navigate("EditInfo")}>
                             <MaterialIcons name="manage-accounts" size={50} color={"#EEE"} />
                             <Text style={styles.text}>Edit Info</Text>
                         </TouchableOpacity>

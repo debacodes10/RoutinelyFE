@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import BottomNavigation from '../../components/Navigation/BottomNavigation';
 import DualContainer from '../../components/Containers/DualContainer';
 import { supabase } from "./../../libs/supabase"
+import {SERVER_URL, SERVER_PORT} from "@env"
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -16,8 +17,10 @@ export default function Dashboard() {
     const [user, setUser] = useState()
     const [userData, setUserData] = useState()
     const [session, setSession] = useState()
-
-    // Calculate maximum height for blockContainer
+    const [reminderCount, setReminderCount] = useState(0);
+    const [classCount, setClassCount] = useState(0);
+    
+  // Calculate maximum height for blockContainer
     const maxBlockContainerHeight = screenHeight - 25;
 
     // Calculate dynamic height for blockContainer based on scrollY
@@ -43,6 +46,40 @@ export default function Dashboard() {
       })
     }, [])
 
+    
+useEffect(() => {
+  const fetchCounts = async () => {
+    if (!session?.user?.email) return;
+
+    try {
+      const reminderRes = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${session.user.email}`);
+      const classRes = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/class/${session.user.email}`);
+
+      if (!reminderRes.ok || !classRes.ok) {
+        throw new Error("One or both requests failed");
+      }
+
+      const reminders = await reminderRes.json();
+      const classes = await classRes.json();
+
+      const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      const filteredClasses = classes.filter(cls => cls.day === currentDay)
+
+      const today = new Date();
+      const currentDate = today.toLocaleDateString('en-GB'); // gives DD/MM/YYYY
+      const filteredReminders = reminders.filter(reminder => reminder.date === currentDate)
+
+      setReminderCount(filteredReminders.length || 0);
+      setClassCount(filteredClasses.length || 0);
+    } catch (error) {
+      console.error("Failed to fetch counts:", error);
+      setReminderCount(0);
+      setClassCount(0);
+    }
+  };
+
+  fetchCounts();
+}, [session]);
     return (
         <SafeAreaView style={styles.container}>
             <Text style={[styles.text, { fontWeight: '500', fontSize: 16, color: '#CCC' }]}>
@@ -68,7 +105,7 @@ export default function Dashboard() {
                     }] 
                 }}>
                     <Text style={[styles.text, { fontWeight: '300', fontSize: 36, marginVertical: 12 }]}>
-                        You have 3 remaining classes and 2 pending tasks for today.
+                        You have {classCount} remaining classes and {reminderCount} pending tasks for today.
                     </Text>
                 </Animated.View>
                 <Animated.View style={{ height: blockContainerHeight }}>

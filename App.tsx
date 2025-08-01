@@ -16,6 +16,7 @@ import About from "./screens/Account/About"
 import EditReminders from "./screens/Reminders/EditReminders"
 import EditLecture from "./screens/Lecture/EditLecture"
 import EditInfo from "./screens/Account/EditInfo"
+import EditNote from "./screens/Note/EditNote"
 
 import 'react-native-url-polyfill/auto'; // Polyfills URL and URLSearchParams
 import 'react-native-get-random-values'; // Ensures crypto.getRandomValues() works
@@ -51,6 +52,8 @@ export default function App() {
         <Stack.Screen component={EditReminders} name="EditReminders" options={{headerShown: false}} />
         <Stack.Screen component={EditLecture} name="EditLecture" options={{headerShown: false}} />
         <Stack.Screen component={EditInfo} name="EditInfo" options={{headerShown: false}} />
+
+        <Stack.Screen component={EditNote} name="EditNote" options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )

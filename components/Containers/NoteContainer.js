@@ -45,6 +45,7 @@ export default function NoteContainer({ email }) {
     noteData.map((note) => (
       <NoteBlock 
         key={note._id}
+        id={note._id}
         title={note.title}
         tag={note.tags}
         body={note.description}

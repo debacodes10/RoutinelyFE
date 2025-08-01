@@ -27,6 +27,7 @@ export default function ReminderBlock({
 
   const handleDelete = async () => {
     try {
+      console.log(id)
       const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${id}`, {
         method: "DELETE",
         headers: {

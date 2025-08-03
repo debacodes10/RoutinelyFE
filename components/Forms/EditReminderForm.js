@@ -9,7 +9,7 @@ import { SERVER_PORT, SERVER_URL } from "@env";
 export default function EditReminderForm({ reminderId, props }) {
   const navigation = useNavigation();
 
-  //console.log("On form: ", props);
+  console.log("On form: ", props);
 
   const [inputHeight, setInputHeight] = useState(22 * 7);
 
@@ -125,6 +125,7 @@ export default function EditReminderForm({ reminderId, props }) {
         placeholder="Tag"
         placeholderTextColor="#AAA"
         style={[styles.text, { fontSize: 22, fontWeight: '300', height: inputHeight, borderBottomWidth: 1, borderBottomColor: '#CCC', textAlignVertical: 'top' }]}
+        multiline
       />
 
       <View style={styles.inputGroup}>

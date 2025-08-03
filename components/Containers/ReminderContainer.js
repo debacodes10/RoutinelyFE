@@ -17,13 +17,8 @@ export default function ReminderContainer({ email }) {
       try {
         const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/${email}`);
         const data = await response.json();
-
-        // Get the current date in DD/MM/YYYY format
         const currentDate = new Date().toLocaleDateString('en-GB');
-
-        // Filter data to only include reminders for the current date
         const filteredData = data.filter(reminder => reminder.date === currentDate);
-        
         setReminderData(filteredData);
       } catch (error) {
         console.log('Error fetching user data:', error);
@@ -45,6 +40,7 @@ export default function ReminderContainer({ email }) {
           key={reminder._id} 
           id={reminder._id} 
           tag={reminder.tag}
+          date={reminder.date}
           time={reminder.time}
           taskName={reminder.title}
           priority={reminder.priority}

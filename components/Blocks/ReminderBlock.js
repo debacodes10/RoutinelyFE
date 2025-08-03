@@ -8,7 +8,7 @@ export default function ReminderBlock({
   id, 
   tag, 
   time, 
-  taskName, 
+  taskName,
   priority, 
   assignee, 
   accentColor, 
@@ -20,8 +20,7 @@ export default function ReminderBlock({
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleUpdate = async () => {
-    navigation.navigate("EditReminders", {id})
-
+    navigation.navigate("EditReminders", {id}) 
     setModalVisible(false);
   };
 

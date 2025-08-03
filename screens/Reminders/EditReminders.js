@@ -16,7 +16,7 @@ export default function EditReminders({ route }) {
   const fetchReminder = async () => {
     try {
       const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/id/${id}`);
-      const data = await response.json(); 
+      const data = await response.json();
       setReminderData(data)
     } catch (error) {
       console.error("Error fetching reminder:", error);

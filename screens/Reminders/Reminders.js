@@ -64,9 +64,6 @@ export default function Reminders() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <TouchableOpacity onPress={() => navigation.goBack()} activeOpacity={1}>
-            <AntDesign name="left" size={40} color={'#EEE'} />
-          </TouchableOpacity>
           <Text style={[styles.text, { fontSize: 40, fontWeight: '300' }]}>Reminders</Text>
         </View>
         <TouchableOpacity

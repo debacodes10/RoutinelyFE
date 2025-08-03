@@ -78,7 +78,6 @@ export default function ReminderForm({email}) {
       assignee: assignee,
       color: selectedColor,
     };
-    console.log(data);
     try {
       const response = await fetch(`${SERVER_URL}:${SERVER_PORT}/api/reminder/create`, {
         method: 'POST',

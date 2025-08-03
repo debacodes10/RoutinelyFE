@@ -72,7 +72,7 @@ export default function AccountOptions({ authenticated }) {
                     </View>
                     <View style={styles.rowContainer}>
                         <TouchableOpacity style={styles.eachOption} activeOpacity={0.75}
-                          onPress={handleFeatureNotReady}>
+                          onPress={()=>navigation.navigate("Categories")}>
                             <MaterialIcons name="category" size={50} color={"#EEE"} />
                             <Text style={styles.text}>Categories</Text>
                         </TouchableOpacity>

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 24,
-    fontWeight: "500",
+    fontWeight: "300",
     color: "#DDD",
     fontFamily: 'Outfit'
   },
